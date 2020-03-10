@@ -4,7 +4,7 @@ import urllib.request
 import bs4
 client = discord.Client()
 TOKEN = 'Njg0MjU2NjM0NTE1NzUwOTYw.Xl3eGg.-_YFZRAsvYV-s0epRZ9_oOoM3do'
-
+#깃허브올림
 #봇정보
 @client.event
 async def on_ready():
