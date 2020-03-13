@@ -29,10 +29,9 @@ async def on_message(message):
         html = urllib.request.urlopen(url)
 
         bsObj = bs4.BeautifulSoup(html, "html.parser")
-
         rank1 = bsObj.find("div", {"class": "TierRankInfo"})
         rank2 = rank1.find("div", {"class": "TierRank"})
-        rank3 = rank2.text
+        rank3 = rank2.text.strip()
 
         print(rank3)
 
