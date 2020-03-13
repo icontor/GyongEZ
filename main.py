@@ -27,19 +27,35 @@ async def on_message(message):
         await message.channel.send('그게 맞지')
 
     if message.content.startswith("!롤"):
-        learn = message.content.split(" ")
-        location = learn[1]
-        enc_location = urllib.parse.quote(location)
 
-        url = "http://www.op.gg/summoner/userName=" + enc_location
+        #Construct the Username
+        userInstruction = message.content.split(" ")
+        userName = userInstruction[1]
+
+        url = "http://www.op.gg/summoner/userName=" + urllib.parse.quote(userName)
         html = urllib.request.urlopen(url)
 
         bsObj = bs4.BeautifulSoup(html, "html.parser")
         rank1 = bsObj.find("div", {"class": "TierRankInfo"})
-        rank2 = rank1.find("div", {"class": "TierRank"})
-        rank3 = rank2.text
-        print(rank3)
-        if rank3 != 'Unranked':
+        rank2 = rank1.find("div", {"class": "TierRank"}).text
+
+        print("He's rank is " + rank2)
+
+        #Construct the discord chatbot Object
+        embed = discord.Embed(
+            title='롤 정보',
+            description='롤 정보입니다.',
+            colour=discord.Colour.green()
+        )
+
+        #case 1: Unrank
+        if "Unranked" in rank2:
+            embed.add_field(name='당신의 티어', value=rank2, inline=False)
+            embed.add_field(name='-당신은 언랭-', value="언랭은 더이상의 정보는 제공하지 않습니다.", inline=False)
+            await message.channel.send(embed=embed)
+        #case 2: Rank
+        else:
+            #Crawling the info
             jumsu1 = rank1.find("div", {"class": "TierInfo"})
             jumsu2 = jumsu1.find("span", {"class": "LeaguePoints"})
             jumsu3 = jumsu2.text
@@ -56,17 +72,9 @@ async def on_message(message):
             winlose2_2txt = winlose2_2.text
 
             print(winlose2txt + " " + winlose2_1txt + " " + winlose2_2txt)
-        embed = discord.Embed(
-            title='롤 정보',
-            description='롤 정보입니다.',
-            colour=discord.Colour.green()
-        )
-        if rank3 == 'Unranked':
-            embed.add_field(name='당신의 티어', value=rank3, inline=False)
-            embed.add_field(name='-당신은 언랭-', value="언랭은 더이상의 정보는 제공하지 않습니다.", inline=False)
-            await message.channel.send(embed=embed)
-        else:
-            embed.add_field(name='당신의 티어', value=rank3, inline=False)
+
+            #Reconstruct the discord chatbot Object
+            embed.add_field(name='당신의 티어', value=rank2, inline=False)
             embed.add_field(name='당신의 LP(점수)', value=jumsu4, inline=False)
             embed.add_field(name='당신의 승,패 정보', value=winlose2txt + " " + winlose2_1txt, inline=False)
             embed.add_field(name='당신의 승률', value=winlose2_2txt, inline=False)
