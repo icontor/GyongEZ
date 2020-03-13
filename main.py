@@ -43,15 +43,13 @@ async def on_message(message):
 
         #Construct the discord chatbot Object
         embed = discord.Embed(
-            title='롤 정보',
-            description='롤 정보입니다.',
+            title=userName,
             colour=discord.Colour.green()
         )
 
         #case 1: Unrank
         if "Unranked" in rank2:
-            embed.add_field(name='당신의 티어', value=rank2, inline=False)
-            embed.add_field(name='-당신은 언랭-', value="언랭은 더이상의 정보는 제공하지 않습니다.", inline=False)
+            embed.add_field(name="죄송합니다", value='언랭은 검색 하실 수 없습니다', inline=False)
             await message.channel.send(embed=embed)
         #case 2: Rank
         else:
@@ -71,13 +69,17 @@ async def on_message(message):
             winlose2_1txt = winlose2_1.text
             winlose2_2txt = winlose2_2.text
 
+            MostCP = winlose1.find("")
+
             print(winlose2txt + " " + winlose2_1txt + " " + winlose2_2txt)
 
+
+
             #Reconstruct the discord chatbot Object
-            embed.add_field(name='당신의 티어', value=rank2, inline=False)
-            embed.add_field(name='당신의 LP(점수)', value=jumsu4, inline=False)
-            embed.add_field(name='당신의 승,패 정보', value=winlose2txt + " " + winlose2_1txt, inline=False)
-            embed.add_field(name='당신의 승률', value=winlose2_2txt, inline=False)
+            embed.add_field(name='티어', value=rank2, inline=False)
+            embed.add_field(name='LP(점수)', value=jumsu4, inline=False)
+            embed.add_field(name='승,패 정보', value=winlose2txt + " " + winlose2_1txt, inline=False)
+            embed.add_field(name='승률', value=winlose2_2txt, inline=False)
             await message.channel.send(embed=embed)
 
 client.run(TOKEN)
