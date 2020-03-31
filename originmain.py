@@ -12,6 +12,7 @@ bot = commands.Bot(command_prefix='!')
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
+
 #input bot commands
 
 @bot.command()
@@ -26,8 +27,8 @@ async def 도움말(ctx):
 
 @bot.command()
 async def 전적검색(ctx, arg):
-    text = SearchingRank(arg, None)
-    await ctx.send(text)
+    text = SearchingRank(arg)
+    await ctx.send(embed=text)
 
 #run discord bot
 bot.run(TOKEN)
